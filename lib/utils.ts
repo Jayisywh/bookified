@@ -123,6 +123,7 @@ export async function parsePDFFile(file: File) {
     }
 
     await firstPage.render({
+      canvas: canvas,
       canvasContext: context,
       viewport: viewport,
     }).promise;
