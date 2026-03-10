@@ -5,6 +5,7 @@ import { CreateBook, TextSegment } from "@/types";
 import { generateSlug, serializeData } from "../utils";
 import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/book-segment.model";
+import { revalidatePath } from "next/cache";
 
 export const getAllBooks = async () => {
   try {
@@ -83,6 +84,7 @@ export const createBook = async (data: CreateBook) => {
     //TODO: Check subscription limits before create a book
 
     const newBook = await Book.create({ ...data, slug, totalSegments: 0 });
+    revalidatePath("/");
     return {
       status: "success",
       data: serializeData(newBook),
