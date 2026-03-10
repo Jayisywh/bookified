@@ -1,3 +1,4 @@
+"server only";
 import { IBook } from "@/types";
 import { models, Schema, model } from "mongoose";
 

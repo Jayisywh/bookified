@@ -1,3 +1,4 @@
+"server only";
 import { IBookSegment } from "@/types";
 import { model, models, Schema } from "mongoose";
 

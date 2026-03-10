@@ -1,3 +1,5 @@
+"server only";
+
 import { auth } from "@clerk/nextjs/server";
 import { handleUpload, HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
@@ -21,6 +23,7 @@ export async function POST(request: Request): Promise<NextResponse> {
             "image/png",
             "image/webp",
           ],
+          addRandomSuffix: true,
         };
       },
       onUploadCompleted: async ({ blob, tokenPayload }) => {
