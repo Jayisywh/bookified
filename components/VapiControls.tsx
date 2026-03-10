@@ -1,10 +1,12 @@
 "use client";
 
+import React from "react";
 import useVapi from "@/hooks/useVapi";
 import { IBook } from "@/types";
 import { Mic, MicOff } from "lucide-react";
 import Image from "next/image";
 import Transcript from "@/components/Transcript";
+import { toast } from "sonner";
 
 const VapiControls = ({ book }: { book: IBook }) => {
   const {
@@ -14,8 +16,11 @@ const VapiControls = ({ book }: { book: IBook }) => {
     currentMessage,
     currentUserMessage,
     duration,
+    maxDurationMinutes,
     start,
     stop,
+    limitError,
+    clearError,
   } = useVapi(book);
 
   const formatTime = (seconds: number) => {
@@ -23,6 +28,15 @@ const VapiControls = ({ book }: { book: IBook }) => {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
+
+  // show any errors coming from the hook as toast notifications so the user
+  // understands why the call didn't start (limits, auth, etc.).
+  React.useEffect(() => {
+    if (limitError) {
+      toast.error(limitError);
+      clearError();
+    }
+  }, [limitError, clearError]);
 
   return (
     <>
@@ -70,7 +84,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
             </div>
             <div className="vapi-badge-ai">
               <span className="vapi-badge-ai-text">
-                {formatTime(duration)}/15:00
+                {formatTime(duration)}/{formatTime(maxDurationMinutes * 60)}
               </span>
             </div>
           </div>

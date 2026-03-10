@@ -16,6 +16,7 @@ import {
 const navItems = [
   { label: "Library", href: "/" },
   { label: "Add New", href: "/books/new" },
+  { label: "Subscriptions", href: "/subscriptions" },
 ];
 
 const Navbar = () => {
@@ -25,7 +26,7 @@ const Navbar = () => {
     <header className="w-full fixed z-50 bg-(--bg-primary)">
       <div className="wrapper navbar-height py-4 flex justify-between">
         <Link href="/" className="flex gap-0.5 items-center">
-          <Image src="/logo.webp" alt="logo" width={42} height={26} />
+          <Image src="/logo.png" alt="logo" width={42} height={26} />
           <span className="logo-text">Bookfied</span>
         </Link>
         <nav className="w-fit flex gap-7.5 items-center">

@@ -163,8 +163,13 @@ const UploadForm: React.FC = () => {
             : "Failed to create a book",
         );
       }
+
       if (!book.data) {
-        throw new Error("Book data is missing");
+        throw new Error(
+          typeof book.message === "string"
+            ? book.message
+            : "Book data is missing",
+        );
         return;
       }
       if (!book.data?._id) {
@@ -206,28 +211,8 @@ const UploadForm: React.FC = () => {
         <div className="loading-wrapper">
           <div className="loading-shadow-wrapper">
             <div className="loading-shadow">
-              <svg
-                className="loading-animation"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                />
-              </svg>
-              <div className="loading-title">Processing...</div>
+              <div className="text-7xl animate-bounce">📚</div>
+              <div className="loading-title">Uploading your book...</div>
             </div>
           </div>
         </div>

@@ -13,7 +13,13 @@ export async function POST(req: Request) {
       });
     }
 
-    const result = await createVoiceSession(userId, body.bookId);
+    // allow the client to send its perceived plan as a hint; this helps when
+    // the subscription metadata hasn't propagated yet or the server is
+    // still seeing the free plan by mistake.
+    const clientPlan =
+      typeof body.clientPlan === "string" ? body.clientPlan : undefined;
+
+    const result = await createVoiceSession(userId, body.bookId, clientPlan);
 
     return Response.json(result);
   } catch (error) {

@@ -22,7 +22,7 @@ const HeroSection = () => {
         {/* Note: You would replace the <img> with your actual asset */}
         <div className="flex-1 flex justify-center z-10">
           <Image
-            src="/hero-illustration.jpg"
+            src="/HeroMid.png"
             alt="Library Illustration"
             className="rounded-md"
             width={130}

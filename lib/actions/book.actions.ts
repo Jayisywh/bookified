@@ -6,6 +6,7 @@ import { generateSlug, serializeData } from "../utils";
 import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/book-segment.model";
 import { revalidatePath } from "next/cache";
+import { getUserLimits } from "../utils/subscription.utils";
 
 export const getAllBooks = async () => {
   try {
@@ -17,6 +18,33 @@ export const getAllBooks = async () => {
     };
   } catch (error) {
     console.error("Error connecting to database", error);
+  }
+};
+
+export const searchBooks = async (query: string) => {
+  try {
+    if (!query || query.trim() === "") {
+      return getAllBooks();
+    }
+
+    await connectToDatabase();
+    const searchRegex = new RegExp(query, "i"); // case-insensitive regex
+    const books = await Book.find({
+      $or: [{ title: searchRegex }, { author: searchRegex }],
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    return {
+      success: true,
+      data: serializeData(books),
+    };
+  } catch (error) {
+    console.error("Error searching books", error);
+    return {
+      success: false,
+      data: [],
+    };
   }
 };
 
@@ -72,6 +100,22 @@ export const checkBookExists = async (title: string) => {
 export const createBook = async (data: CreateBook) => {
   try {
     await connectToDatabase();
+
+    // Check subscription limits
+    const userLimits = await getUserLimits();
+    const currentBookCount = await Book.countDocuments({
+      clerkId: data.clerkId,
+    });
+
+    if (currentBookCount >= userLimits.maxBooks) {
+      return {
+        status: "error",
+        data: null,
+        alreadyExists: false,
+        message: `You've reached your book limit (${userLimits.maxBooks}). Upgrade your plan to add more books.`,
+      };
+    }
+
     const slug = generateSlug(data.title);
     const existingBook = await Book.findOne({ slug }).lean();
     if (existingBook) {
@@ -81,7 +125,6 @@ export const createBook = async (data: CreateBook) => {
         alreadyExists: true,
       };
     }
-    //TODO: Check subscription limits before create a book
 
     const newBook = await Book.create({ ...data, slug, totalSegments: 0 });
     revalidatePath("/");

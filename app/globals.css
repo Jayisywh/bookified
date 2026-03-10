@@ -554,6 +554,33 @@
   .library-search-input {
     @apply flex-1 py-2 px-4 outline-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)];
   }
+  .library-section {
+    @apply w-full;
+  }
+  .library-header {
+    @apply flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8;
+  }
+  .library-title {
+    @apply text-2xl font-semibold text-[var(--text-primary)];
+  }
+  .library-empty-message {
+    @apply col-span-full text-center py-12 text-[var(--text-muted)];
+  }
+  .search-bar-wrapper {
+    @apply w-full sm:w-auto;
+  }
+  .search-bar-container {
+    @apply flex items-center bg-white border border-[var(--border-subtle)] rounded-lg overflow-hidden px-4 py-2.5 gap-2 transition-colors hover:border-[var(--border-default)];
+  }
+  .search-bar-icon {
+    @apply size-5 text-[var(--text-muted)] flex-shrink-0;
+  }
+  .search-bar-input {
+    @apply flex-1 outline-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)] bg-transparent;
+  }
+  .search-bar-clear {
+    @apply flex-shrink-0 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors;
+  }
   .library-books-grid {
     @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 md:gap-x-10 gap-y-7 md:gap-y-9;
   }
